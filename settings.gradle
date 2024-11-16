@@ -1,0 +1,5 @@
+rootProject.name = 'KafkaProject'
+include ':KafkaProducer'
+project(':KafkaProducer').projectDir = new File("${rootProject.projectDir}/KafkaProducer")
+include ':KafkaConsumer'
+project(':KafkaConsumer').projectDir = new File("${rootProject.projectDir}/KafkaConsumer")

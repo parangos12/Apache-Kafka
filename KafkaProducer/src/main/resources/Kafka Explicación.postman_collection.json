@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "c1b6fa8f-650f-423f-9ddc-4bc690069265",
+		"name": "Kafka Explicación",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31645082"
+	},
+	"item": [
+		{
+			"name": "Producer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\":\"Rome Deny Peter 3 Backward Quintus\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/kafka/producer/send",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"kafka",
+						"producer",
+						"send"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
