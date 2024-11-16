@@ -1,49 +1,31 @@
 package com.kafka.consumer.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.config.TopicConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.config.TopicBuilder;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.annotation.KafkaListenerConfigurer;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistrar;
+import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
+import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+@Slf4j
 @Configuration
-public class KafkaConfiguration {
+@RequiredArgsConstructor
+public class KafkaConfiguration implements KafkaListenerConfigurer {
 
-  @Value("${spring.kafka.bootstrap-servers}")
-  private String bootstrapServers;
+  private final LocalValidatorFactoryBean validatorFactory;
 
-  public Map<String, Object> consumerConfig() {
-    Map<String, Object> props = new HashMap<>();
-    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    return props;
+  @Override
+  public void configureKafkaListeners(KafkaListenerEndpointRegistrar register) {
+    register.setMessageHandlerMethodFactory(kafkaHandlerMethodFactory());
   }
 
   @Bean
-  public ConsumerFactory<String, String> consumerFactory() {
-    return new DefaultKafkaConsumerFactory<>(consumerConfig());
-  }
-
-  @Bean
-  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> consumer() {
-    ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(consumerFactory());
+  public MessageHandlerMethodFactory kafkaHandlerMethodFactory() {
+    DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
+    factory.setValidator(validatorFactory);
     return factory;
   }
 }

@@ -4,4 +4,9 @@ spring:
     topic:
       name: topic-sample
     consumer:
-      group-id: group-id
+      group-id: transaction-group
+      key-deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
+      value-deserializer: "org.springframework.kafka.support.serializer.ErrorHandlingDeserializer"
+      properties:
+        spring.deserializer.value.delegate.class: "org.springframework.kafka.support.serializer.JsonDeserializer"
+        "[spring.json.value.default.type]": "com.kafka.consumer.dto.BankTransactionPayload"

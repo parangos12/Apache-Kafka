@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.4'
-	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.springframework.boot' version "${spring_boot_version}"
+	id 'io.spring.dependency-management' version "${spring_dependency_management_version}"
 }
 
 group = 'com.kafka'
@@ -45,6 +45,11 @@ subprojects {
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'org.springframework.kafka:spring-kafka-test'
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+		implementation("org.apache.commons:commons-lang3:${commons_lang3_version}")
+
+		implementation "org.springframework.boot:spring-boot-starter-validation:${spring_boot_version}"
+
 	}
 }
 
