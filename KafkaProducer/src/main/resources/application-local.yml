@@ -8,6 +8,6 @@ spring:
         spring.deserializer.value.delegate.class: "org.springframework.kafka.support.serializer.JsonDeserializer"
         "[spring.json.value.default.type]": "com.nordstrom.itemplanning.location.dto.StorePayload"
     topic:
-      name: topic-sample
+      name: transactions-topic
       partitions: 3
       replicas: 1
