@@ -14,6 +14,9 @@ public class BankServiceImpl implements BankService {
         "Sending money from {} to {} with amount {}",
         bankTransactionPayload.getOriginAccountId(),
         bankTransactionPayload.getDestinationAccountId(),
-        (int) bankTransactionPayload.getMoney());
+        bankTransactionPayload.getMoney());
+    if(bankTransactionPayload.getMoney() > 1000) {
+      throw new RuntimeException("Amount exceeds the limit");
+    }
   }
 }
