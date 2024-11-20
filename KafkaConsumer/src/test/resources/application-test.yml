@@ -1,0 +1,14 @@
+SERVICE_NAME: kafka-consumer
+APP_GROUP: bank-ivanovo
+ENV_SHORT_NAME: test
+spring:
+  kafka:
+    groupId: kafka-consumer-group-test
+    applicationId: kafka-data-consumer-test
+    properties:
+      security.protocol: PLAINTEXT
+    topic:
+      name: transactions-test-topic
+    consumer:
+      group-id: transactions-nonprod-group-app
+      auto-offset-reset: earliest

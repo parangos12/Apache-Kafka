@@ -37,6 +37,7 @@ public class KafkaConsumer {
           topic,
           offset);
       bankService.sendMoney(bankTransaction);
+      bankService.saveTransaction(bankTransaction);
     } catch (JsonProcessingException ex) {
       log.error("Error processing message: {}", ex.getMessage());
     }

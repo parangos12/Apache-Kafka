@@ -19,4 +19,9 @@ public class BankServiceImpl implements BankService {
       throw new RuntimeException("Amount exceeds the limit");
     }
   }
+
+  @Override
+  public BankTransactionPayload saveTransaction(BankTransactionPayload bankTransaction) {
+    return bankTransaction;
+  }
 }
