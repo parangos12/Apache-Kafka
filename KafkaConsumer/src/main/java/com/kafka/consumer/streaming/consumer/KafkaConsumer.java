@@ -3,10 +3,9 @@ package com.kafka.consumer.streaming.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kafka.consumer.dto.BankTransactionPayload;
+import com.kafka.consumer.entity.BankTransaction;
 import com.kafka.consumer.service.BankService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +23,12 @@ public class KafkaConsumer {
 
   private final BankService bankService;
 
-  @RetryableTopic(attempts = "4", backoff = @Backoff(delay = 3000, multiplier = 1.5))
+  @RetryableTopic(attempts = "4", backoff = @Backoff(delay = 3000, multiplier = 1))
   @KafkaListener(topics = {"#{'${spring.kafka.topic.name}'}"})
   public void listener(
       @Payload BankTransactionPayload bankTransaction,
       @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
-      @Header(KafkaHeaders.OFFSET) long offset) {
+      @Header(KafkaHeaders.OFFSET) long offset) throws JsonProcessingException {
     try {
       log.info(
           "Received: {} from {} offset {}",
@@ -37,9 +36,17 @@ public class KafkaConsumer {
           topic,
           offset);
       bankService.sendMoney(bankTransaction);
-      bankService.saveTransaction(bankTransaction);
-    } catch (JsonProcessingException ex) {
+      BankTransaction bankTransactionNew =
+          new BankTransaction(
+              bankTransaction.getOriginAccountId(),
+              bankTransaction.getOriginAccountId(),
+              bankTransaction.getTransactionType(),
+              bankTransaction.getMoney());
+      bankService.saveTransaction(bankTransactionNew);
+    }
+    catch (Exception ex) {
       log.error("Error processing message: {}", ex.getMessage());
+      throw ex;
     }
   }
 

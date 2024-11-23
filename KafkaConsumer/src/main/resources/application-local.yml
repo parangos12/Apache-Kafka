@@ -1,4 +1,18 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/transactions_db
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+
   kafka:
     bootstrap-servers: localhost:9092, localhost:9093
     topic:
