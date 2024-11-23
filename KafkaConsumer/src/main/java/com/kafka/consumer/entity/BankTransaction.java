@@ -1,5 +1,6 @@
 package com.kafka.consumer.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -13,14 +14,19 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "BankTransaction")
+@Table(name = "bank_transaction")
 public class BankTransaction {
 
-  @Id private String originAccountId;
+  @Id
+  @Column(name="origin_account_id")
+  private String originAccountId;
 
+  @Column(name="destination_account_id")
   private String destinationAccountId;
 
+  @Column(name="transaction_type")
   private String transactionType;
 
+  @Column(name="money")
   private double money;
 }

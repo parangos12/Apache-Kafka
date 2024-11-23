@@ -36,24 +36,19 @@ class KafkaConsumerApplicationTests {
 
   @Autowired private TransactionRepository transactionRepository;
   @Autowired KafkaTemplate<String, String> kafkaTemplate;
-  @Autowired BankService bankService;
-  @Autowired ObjectMapper objectMapper;
 
   @Test
   @Sql({"/sql/ddl/transanction_ddl.sql"})
   void processStoreMessageSuccessfully() throws IOException {
 
-    BankTransaction expected = new BankTransaction("P645444031", "AB52891827", "DEPOSIT", 900.0);
+    BankTransaction expected = new BankTransaction("A645444032", "AB52891827", "DEPOSIT", 223.0);
 
     String stringPayload =
         Files.readString(
             Paths.get("src/test/resources/files/transaction.json"), StandardCharsets.UTF_8);
 
-    BankTransactionPayload bankTransactionPayload =
-        objectMapper.readValue(stringPayload, BankTransactionPayload.class);
-
     kafkaTemplate.send(
-        new ProducerRecord<>("transactions-test-topic", "A645444032", stringPayload));
+        new ProducerRecord<>("transactions-test-topic", "AB52891827", stringPayload));
 
     Awaitility.await()
         .atMost(20, TimeUnit.SECONDS)

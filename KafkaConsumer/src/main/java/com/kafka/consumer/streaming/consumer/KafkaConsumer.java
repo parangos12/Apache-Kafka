@@ -39,7 +39,7 @@ public class KafkaConsumer {
       BankTransaction bankTransactionNew =
           new BankTransaction(
               bankTransaction.getOriginAccountId(),
-              bankTransaction.getOriginAccountId(),
+              bankTransaction.getDestinationAccountId(),
               bankTransaction.getTransactionType(),
               bankTransaction.getMoney());
       bankService.saveTransaction(bankTransactionNew);

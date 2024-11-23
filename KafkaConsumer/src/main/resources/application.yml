@@ -3,4 +3,3 @@ spring:
     active: local
   application:
     name: KafkaConsumer
-
